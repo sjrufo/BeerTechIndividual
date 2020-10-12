@@ -29,6 +29,7 @@ CREATE TABLE `operacao` (
   `horario_operacao` varchar(255) DEFAULT NULL,
   `tipo_operacao` int(11) NOT NULL,
   `valor_operacao` double DEFAULT NULL,
+  `hash` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id_operacao`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -51,5 +52,15 @@ UNLOCK TABLES;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+DROP TABLE IF EXISTS `conta_corrente`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `conta_corrente` (
+  `id_conta` bigint(20) NOT NULL AUTO_INCREMENT,
+  `hash` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id_conta`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 -- Dump completed on 2020-10-10  3:18:19

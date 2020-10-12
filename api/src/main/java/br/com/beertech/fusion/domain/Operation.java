@@ -11,18 +11,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import br.com.beertech.fusion.controller.dto.OperacaoDto;
+import br.com.beertech.fusion.controller.dto.OperationDTO;
+import br.com.beertech.fusion.controller.dto.TransferDTO;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "operacao")
-public class Operacao implements Serializable {
+public class Operation implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     @JsonIgnore
     private Long idOperacao;
 
@@ -30,21 +31,28 @@ public class Operacao implements Serializable {
 
     private int tipoOperacao;
     private Double valorOperacao;
+    private String hash;
 
-
-
-    public Operacao() {
+    public Operation() {
     }
 
-    public Operacao(OperacaoDto operacaoDto) {
-        this.tipoOperacao = operacaoDto.getTipoOperacao().ID;
-        this.valorOperacao = operacaoDto.getValorOperacao();
+    public Operation(OperationDTO operacaoDTO) {
+        this.tipoOperacao = operacaoDTO.getTipoOperacao().ID;
+        this.valorOperacao = operacaoDTO.getValorOperacao();
         this.horarioOperacao = getDataAtual();
+        this.hash = operacaoDTO.getHash();
     }
 
+    public Operation(TransferDTO transferDTO, OperationType operationType, String hash) {
+    	this.tipoOperacao = operationType.ID;
+    	this.valorOperacao = transferDTO.getValue();
+    	this.horarioOperacao = getDataAtual();
+    	this.hash = hash;    	
+    }
+    
     @JsonIgnore
-    public OperacaoDto getOperacaoDto() {
-        return new OperacaoDto(OperationType.getById(this.tipoOperacao), this.valorOperacao);
+    public OperationDTO getOperacaoDto() {
+        return new OperationDTO(OperationType.getById(this.tipoOperacao), this.valorOperacao,this.hash);
     }
     
     public String getHorarioOperacao() {
@@ -78,10 +86,18 @@ public class Operacao implements Serializable {
     public void setValorOperacao(Double valorOperacao) {
         this.valorOperacao = valorOperacao;
     }
+    
+    public String getHash() {
+		return hash;
+	}
 
-    @Override
+	public void setHash(String hash) {
+		this.hash = hash;
+	}
+
+	@Override
     public int hashCode() {
-        return Objects.hash(idOperacao, tipoOperacao, valorOperacao);
+        return Objects.hash(idOperacao, tipoOperacao, valorOperacao, hash);
     }
 
     private String getDataAtual() {

@@ -4,16 +4,16 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import br.com.beertech.fusion.controller.dto.OperacaoDto;
+import br.com.beertech.fusion.controller.dto.OperationDTO;
 import br.com.beertech.fusion.domain.OperationType;
-import br.com.beertech.fusion.domain.Saldo;
+import br.com.beertech.fusion.domain.Balance;
 import br.com.beertech.fusion.service.SaldoService;
 
 @Service
 public class SaldoServiceImpl implements SaldoService {
 
     @Override
-    public Saldo calcularSaldo(List<OperacaoDto> operacoes) {
+    public Balance calcularSaldo(List<OperationDTO> operacoes) {
         Double valorTotal = 0.0;
         if (operacoes != null && !operacoes.isEmpty()) {
             Double depositos = operacoes.stream()
@@ -26,7 +26,7 @@ public class SaldoServiceImpl implements SaldoService {
                     .sum();
             valorTotal = depositos - saques;
         }
-        return new Saldo(valorTotal);
+        return new Balance(valorTotal);
     }
 
 }

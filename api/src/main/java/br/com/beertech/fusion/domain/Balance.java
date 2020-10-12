@@ -3,7 +3,7 @@ package br.com.beertech.fusion.domain;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Saldo implements Serializable {
+public class Balance implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -17,7 +17,7 @@ public class Saldo implements Serializable {
         this.saldo = saldo;
     }
 
-    public Saldo(Double saldo) {
+    public Balance(Double saldo) {
         this.saldo = saldo;
     }
 
@@ -29,6 +29,6 @@ public class Saldo implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        return this == obj || (obj != null && obj instanceof Saldo && saldo.equals(((Saldo) obj).getSaldo()));
+        return this == obj || (obj != null && obj instanceof Balance && saldo.equals(((Balance) obj).getSaldo()));
     }
 }

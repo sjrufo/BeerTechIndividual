@@ -2,10 +2,10 @@ package br.com.beertech.fusion.service;
 
 import java.util.List;
 
-import br.com.beertech.fusion.controller.dto.OperacaoDto;
-import br.com.beertech.fusion.domain.Saldo;
+import br.com.beertech.fusion.controller.dto.OperationDTO;
+import br.com.beertech.fusion.domain.Balance;
 
 public interface SaldoService {
 
-    Saldo calcularSaldo(List<OperacaoDto> operacoes);
+    Balance calcularSaldo(List<OperationDTO> operacoes);
 }

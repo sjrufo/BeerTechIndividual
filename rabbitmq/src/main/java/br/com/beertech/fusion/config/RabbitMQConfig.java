@@ -15,6 +15,10 @@ public class RabbitMQConfig {
 	@Value("${javainuse.rabbitmq.queue}")
 	String queueName;
 
+	@Value("${javainuse.rabbitmq.queue.transfer}")
+	String queueTransfer;
+	
+	
 	@Value("${spring.rabbitmq.username}")
 	String username;
 
@@ -26,7 +30,11 @@ public class RabbitMQConfig {
 		return new Queue(queueName, false);
 	}
 	
-	
+	@Bean
+	Queue queueTransfer() {
+		return new Queue(queueTransfer, false);
+	}			
+			
 	@Bean
 	MessageListenerContainer messageListenerContainer(ConnectionFactory connectionFactory ) {
 		SimpleMessageListenerContainer simpleMessageListenerContainer = new SimpleMessageListenerContainer();

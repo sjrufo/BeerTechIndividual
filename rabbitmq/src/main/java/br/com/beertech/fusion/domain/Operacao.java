@@ -10,6 +10,7 @@ public class Operacao implements Serializable {
 
     private String tipoOperacao;
     private Double valorOperacao;
+    private String hash;
 
     public Operacao() { }
 
@@ -29,11 +30,19 @@ public class Operacao implements Serializable {
         this.valorOperacao = valorOperacao;
     }
 
+	public String getHash() {
+		return hash;
+	}
 
-
+	public void setHash(String hash) {
+		this.hash = hash;
+	}
+	
     @Override
     public int hashCode() {
-        return Objects.hash(tipoOperacao, valorOperacao);
+        return Objects.hash(tipoOperacao, valorOperacao, hash);
     }
+
+
 
 }

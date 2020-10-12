@@ -11,12 +11,12 @@ import java.util.Map;
 public class RestClient {
 
     private RestTemplate restTemplate;
-    private Operacao RestObject;
-    public final String APIURL = "http://localhost:8081/bankbeer/operacao";
+    private Operacao restObject;
+    public final String APIURL = "http://localhost:8081/bankbeer/operacao/salvar";
 
     public RestClient(Operacao RestObjectParamenter)
     {
-        RestObject = RestObjectParamenter;
+        restObject = RestObjectParamenter;
     }
     public void sendPostAPI()
     {
@@ -29,8 +29,9 @@ public class RestClient {
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
             Map<String, Object> map = new HashMap<>();
-            map.put("tipoOperacao", RestObject.getTipoOperacao());
-            map.put("valorOperacao", RestObject.getValorOperacao());
+            map.put("tipoOperacao", restObject.getTipoOperacao());
+            map.put("valorOperacao", restObject.getValorOperacao());
+            map.put("hash", restObject.getHash());
 
             HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map, headers);
             ResponseEntity<Operacao> response = this.restTemplate.postForEntity(APIURL, entity,Operacao.class);

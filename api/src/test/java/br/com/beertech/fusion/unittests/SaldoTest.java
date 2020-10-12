@@ -7,44 +7,46 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import br.com.beertech.fusion.controller.dto.OperacaoDto;
+import br.com.beertech.fusion.controller.dto.OperationDTO;
 import br.com.beertech.fusion.domain.OperationType;
-import br.com.beertech.fusion.domain.Saldo;
+import br.com.beertech.fusion.domain.Balance;
 import br.com.beertech.fusion.service.SaldoService;
 import br.com.beertech.fusion.service.impl.SaldoServiceImpl;
 
 public class SaldoTest {
-
+	
+	private static final String HASH = "94fc5d08-8269-4d0d-b45c-41dec9914e9d";
+	
     @Test
     void testaSaldoDeposito() {
-        List<OperacaoDto> operacoes = new ArrayList<>();
-        operacoes.add(new OperacaoDto(OperationType.DEPOSITO, 100.));
+        List<OperationDTO> operacoes = new ArrayList<>();
+        operacoes.add(new OperationDTO(OperationType.DEPOSITO, 100.,HASH));
         SaldoService saldoService = new SaldoServiceImpl();
-        assertEquals(saldoService.calcularSaldo(operacoes), new Saldo(100.));
+        assertEquals(saldoService.calcularSaldo(operacoes), new Balance(100.));
     }
 
     @Test
     void testaSaldoSaque() {
-        List<OperacaoDto> operacoes = new ArrayList<>();
-        operacoes.add(new OperacaoDto(OperationType.SAQUE, 10.));
+        List<OperationDTO> operacoes = new ArrayList<>();
+        operacoes.add(new OperationDTO(OperationType.SAQUE, 10.,HASH));
         SaldoService saldoService = new SaldoServiceImpl();
-        assertEquals(saldoService.calcularSaldo(operacoes), new Saldo(-10.));
+        assertEquals(saldoService.calcularSaldo(operacoes), new Balance(-10.));
     }
 
     @Test
     void testaSaldoOperacoesVariadas() {
-        List<OperacaoDto> operacoes = new ArrayList<>();
-        operacoes.add(new OperacaoDto(OperationType.DEPOSITO, 100.));
-        operacoes.add(new OperacaoDto(OperationType.SAQUE, 25.));
-        operacoes.add(new OperacaoDto(OperationType.SAQUE, 10.));
+        List<OperationDTO> operacoes = new ArrayList<>();
+        operacoes.add(new OperationDTO(OperationType.DEPOSITO, 100.,HASH));
+        operacoes.add(new OperationDTO(OperationType.SAQUE, 25.,HASH));
+        operacoes.add(new OperationDTO(OperationType.SAQUE, 10.,HASH));
         SaldoService saldoService = new SaldoServiceImpl();
-        assertEquals(saldoService.calcularSaldo(operacoes), new Saldo(65.));
+        assertEquals(saldoService.calcularSaldo(operacoes), new Balance(65.));
     }
 
     @Test
     void testaSaldoSemOperacoes() {
-        List<OperacaoDto> operacoes = new ArrayList<>();
+        List<OperationDTO> operacoes = new ArrayList<>();
         SaldoService saldoService = new SaldoServiceImpl();
-        assertEquals(saldoService.calcularSaldo(operacoes), new Saldo(0.));
+        assertEquals(saldoService.calcularSaldo(operacoes), new Balance(0.));
     }
 }
