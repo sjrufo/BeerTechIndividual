@@ -18,9 +18,11 @@ public interface OperationService {
     
     List<Operation> listTransactionByHash(String hash);
 
-	void saveTransfer(TransferDTO transferDTO) throws FusionException;
+    TransferDTO saveTransfer(TransferDTO transferDTO) throws FusionException;
 	
 	Balance calculateBalance(String hash);
 	
 	void publisheOperation(OperationDTO operationDTO);
+	
+	void publisheTransfer(TransferDTO operationDTO);
 }

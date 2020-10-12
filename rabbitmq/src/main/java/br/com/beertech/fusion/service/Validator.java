@@ -1,26 +1,40 @@
 package br.com.beertech.fusion.service;
 
-import br.com.beertech.fusion.domain.Operacao;
+import br.com.beertech.fusion.domain.Operation;
+import br.com.beertech.fusion.domain.Transfer;
 
 public class Validator {
 
-    Operacao ObjectValidator;
+	Operation objectValidator;
+	Transfer transferValidator;
 
-    public Validator(Operacao ObjectValidatorParameter)
-    {
-        ObjectValidator = ObjectValidatorParameter;
-    }
+	public Validator(Operation objectValidatorParameter) {
+		objectValidator = objectValidatorParameter;
+	}
 
-    public boolean ValidateResponseRMQ()
-    {
-        boolean passed = false;
+	public Validator(Transfer objectValidatorParameter) {
+		transferValidator = objectValidatorParameter;
+	}
 
-        if(ObjectValidator.getTipoOperacao().equals("DEPOSITO") || ObjectValidator.getTipoOperacao().equals("SAQUE"))
-        {
-            if(ObjectValidator.getValorOperacao() > 0)
-                passed = true;
-        }
+	public boolean ValidateResponseRMQ() {
+		boolean passed = false;
 
-        return passed;
-    }
+		if (objectValidator.getTipoOperacao().equals("DEPOSITO") || objectValidator.getTipoOperacao().equals("SAQUE")) {
+			if (objectValidator.getValorOperacao() > 0)
+				passed = true;
+		}
+
+		return passed;
+	}
+
+	public boolean ValidateTransferResponseRMQ() {
+		boolean passed = false;
+
+		if (transferValidator.getHashOrigin() != null && transferValidator.getHashDestination()!= null
+				&& transferValidator.getValue() > 0) {
+			passed = true;
+		}
+
+		return passed;
+	}
 }

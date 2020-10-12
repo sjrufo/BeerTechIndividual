@@ -30,7 +30,9 @@ import br.com.beertech.fusion.service.SaldoService;
 @Service
 public class OperationServiceImpl implements OperationService {
 
-	private static final String QUEUE_NAME = "queueFusion";
+	private static final String HOST = "localhost";
+	private static final String QUEUE_OPERATION_NAME = "queueFusion";
+	private static final String QUEUE_TRANSFER_NAME = "queueTransfer";
 
 	private OperationRepository operationRepository;
 
@@ -70,7 +72,7 @@ public class OperationServiceImpl implements OperationService {
 	}
 
 	@Override
-	public void saveTransfer(TransferDTO transferDTO) throws FusionException {
+	public TransferDTO saveTransfer(TransferDTO transferDTO) throws FusionException {
 
 		CurrentAccount accountOrigin = currentAccountService.findByHash(transferDTO.getHashOrigin());
 		CurrentAccount accountDestiny = currentAccountService.findByHash(transferDTO.getHashDestination());
@@ -92,6 +94,7 @@ public class OperationServiceImpl implements OperationService {
 		} else {
 			throw new FusionException("Saldo insuficiente!");
 		}
+		return transferDTO;
 	}
 
 	@Override
@@ -124,15 +127,39 @@ public class OperationServiceImpl implements OperationService {
 			e1.printStackTrace();
 		}
 		ConnectionFactory factory = new ConnectionFactory();
-		factory.setHost("localhost");
+		factory.setHost(HOST);
 
 		try (Connection connection = factory.newConnection(); Channel channel = connection.createChannel()) {
-			channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-			channel.basicPublish("", QUEUE_NAME, null, msgm.getBytes(StandardCharsets.UTF_8));
+			channel.queueDeclare(QUEUE_OPERATION_NAME, false, false, false, null);
+			channel.basicPublish("", QUEUE_OPERATION_NAME, null, msgm.getBytes(StandardCharsets.UTF_8));
 		} catch (IOException | TimeoutException e) {
 			e.printStackTrace();
 		}
 
+	}
+
+	@Override
+	public void publisheTransfer(TransferDTO transferDTO) {
+	
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		String msgm = null;
+
+		try {
+			msgm = objectMapper.writeValueAsString(transferDTO);
+		} catch (JsonProcessingException e1) {
+			e1.printStackTrace();
+		}
+		ConnectionFactory factory = new ConnectionFactory();
+		factory.setHost(HOST);
+
+		try (Connection connection = factory.newConnection(); Channel channel = connection.createChannel()) {
+			channel.queueDeclare(QUEUE_TRANSFER_NAME, false, false, false, null);
+			channel.basicPublish("", QUEUE_TRANSFER_NAME, null, msgm.getBytes(StandardCharsets.UTF_8));
+		} catch (IOException | TimeoutException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 }

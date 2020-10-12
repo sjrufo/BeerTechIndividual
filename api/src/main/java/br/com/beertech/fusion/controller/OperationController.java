@@ -67,7 +67,6 @@ public class OperationController {
     public ResponseEntity<Balance> listSaldoConta(@PathVariable String hash) {
     	Balance saldo = operationService.calculateBalance(hash);
     	return new ResponseEntity<>(saldo, OK);
-    	
     }
     
     @PostMapping("/operacao/salvar")
@@ -80,19 +79,19 @@ public class OperationController {
     public ResponseEntity<String> queueOperations(@RequestBody OperationDTO operationDTO) {
     	
     	 operationService.publisheOperation(operationDTO);
-    	return ResponseEntity.status(OK).body("Operação realizada!");
+    	return ResponseEntity.status(OK).body("Solicitação de Operação executada!");
     }
 
-    @PostMapping("/transferencia")
-    public ResponseEntity<String> saveTransfer(@RequestBody TransferDTO transferDTO) {
-        try {
-			operationService.saveTransfer(transferDTO);
-		} catch (FusionException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-		}
-        return ResponseEntity.status(OK).body("Transferêcia realizada!");
+    @PostMapping("/transferencia/salvar")
+    public ResponseEntity<TransferDTO> saveTransfer(@RequestBody TransferDTO transferDTO) throws FusionException {
+       	return new ResponseEntity<>(operationService.saveTransfer(transferDTO), CREATED);
     }
     
-    
+    @PostMapping("/transferencia")
+    public ResponseEntity<String> queueTransfer(@RequestBody TransferDTO transferDTO) {
+       
+    	operationService.publisheTransfer(transferDTO);
+        return ResponseEntity.status(OK).body("Solicitação de Transferêcia executada!");
+    }
 
 }

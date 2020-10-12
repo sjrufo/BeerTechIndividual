@@ -4,15 +4,13 @@ import java.io.Serializable;
 import java.util.Objects;
 
 
-public class Operacao implements Serializable {
+public class Operation implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private String tipoOperacao;
     private Double valorOperacao;
     private String hash;
-
-    public Operacao() { }
 
     public String getTipoOperacao() {
         return tipoOperacao;
@@ -42,7 +40,4 @@ public class Operacao implements Serializable {
     public int hashCode() {
         return Objects.hash(tipoOperacao, valorOperacao, hash);
     }
-
-
-
 }

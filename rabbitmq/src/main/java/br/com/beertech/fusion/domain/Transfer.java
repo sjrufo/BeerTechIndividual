@@ -1,11 +1,14 @@
-package br.com.beertech.fusion.controller.dto;
+package br.com.beertech.fusion.domain;
 
-public class TransferDTO {
+import java.io.Serializable;
+import java.util.Objects;
+
+public class Transfer implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+
 	private String hashOrigin;
-	
 	private String hashDestination;
-	
 	private Double value;
 
 	public String getHashOrigin() {
@@ -31,4 +34,9 @@ public class TransferDTO {
 	public void setValue(Double value) {
 		this.value = value;
 	}
+	
+	@Override
+    public int hashCode() {
+        return Objects.hash(hashOrigin, hashDestination, value);
+    }
 }
